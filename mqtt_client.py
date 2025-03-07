@@ -41,14 +41,29 @@ def on_message(client: mqtt.Client, userdata, msg: mqtt.MQTTMessage) -> None:
     try:
         payload = msg.payload.decode("utf-8")
         data = json.loads(payload)  # Intentar parsear como JSON
-        latest_data[msg.topic] = data  # Almacenar según el topic
-        print(f"📥 [{msg.topic}] Nuevo dato recibido: {data}")
+        
+        # Verificar si el mensaje contiene una estructura esperada
+        if "data" in data:
+            processed_data = {}
 
-        # Emitir los datos al frontend en tiempo real
-        if socketio:
-            socketio.emit("update_data", {"topic": msg.topic, "data": data})
+            # Extraer los valores clave
+            for item in data["data"]:
+                tag_name = item["tagName"]
+                if "values" in item and len(item["values"]) > 0:
+                    processed_data[tag_name] = item["values"][0]["value"]  # Obtener el último valor disponible
+
+            latest_data[msg.topic] = processed_data  # Guardar datos limpios
+            print(f"📥 [{msg.topic}] Datos procesados:", processed_data)
+
+            # Emitir los datos al frontend en tiempo real
+            if socketio:
+                socketio.emit("update_values", {msg.topic: processed_data})
+        else:
+            print(f"⚠️ [{msg.topic}] Formato de datos inesperado:", data)
+
     except json.JSONDecodeError:
         print(f"❌ [{msg.topic}] Error: Mensaje recibido no es JSON válido - {payload}")
+
 
 def init_mqtt(socketio_instance: SocketIO) -> list:
     """ Inicializa y configura los clientes MQTT para cada fuente de datos. """
