@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Demo Flotación</title>
   <!-- Bootstrap CSS -->
   <link
@@ -17,7 +17,7 @@
 
 <body class="container mt-5">
   <h1 class="text-center mb-4">Demo Flotación</h1>
-  
+
   <!-- Sección de Value Boxes -->
   <div class="row text-center">
     <div class="col-md-3">
@@ -46,164 +46,21 @@
     </div>
   </div>
 
-  <!-- Sección del gráfico -->
+  <!-- Sección de Gráficos: 70% (líneas) y 30% (barras) -->
   <div class="row mt-5">
-    <div class="col-md-12">
-      <h4 class="text-center">Tendencia en Tiempo Real</h4>
-      <canvas id="trendChart" height="80"></canvas>
+    <!-- Gráfico de tendencias (70%) -->
+    <div class="col-md-8">
+      <h4 class="text-center">Tendencia de Recuperación (%)</h4>
+      <canvas id="trendChart" height="120"></canvas>
+    </div>
+    <!-- Gráfico de barras horizontal (30%) -->
+    <div class="col-md-4">
+      <h4 class="text-center">Top Influencias</h4>
+      <canvas id="shapChart" height="120"></canvas>
     </div>
   </div>
 
-  <!-- Archivo JS principal (después de cargar Socket.IO y Chart.js) -->
-  <!-- Usa url_for si tu estructura de Flask lo requiere -->
+  <!-- Archivo JS principal -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
-
-<!-- <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Flotación</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port);
-        socket.on('update_values', function(data) {
-            console.log("📡 Datos recibidos desde Flask:", data); // Mostrar datos en la consola
-            if (data['Flotation_Predicted']) {
-                document.getElementById('flotation_predicted').innerText = data['Flotation_Predicted'].Rougher_Recovery || 'N/A';
-            }
-            if (data['Flotation']) {
-                document.getElementById('flotation').innerText = data['Flotation']['Rougher Recovery'] || 'N/A';
-                document.getElementById('feed_grade').innerText = data['Flotation']['Feed Grade Cu'] || 'N/A';
-            }
-            updateCharts(data);
-        });
-
-        var ctx1, ctx2;
-        var recoveryChart, feedChart;
-        
-        window.onload = function() {
-            ctx1 = document.getElementById('recoveryChart').getContext('2d');
-            recoveryChart = new Chart(ctx1, {
-                type: 'line',
-                data: { labels: [], datasets: [{ label: 'Rougher Recovery (Predicho)', data: [], borderColor: 'blue', fill: false }, { label: 'Rougher Recovery (Real)', data: [], borderColor: 'orange', fill: false }] },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-
-            ctx2 = document.getElementById('feedChart').getContext('2d');
-            feedChart = new Chart(ctx2, {
-                type: 'bar',
-                data: { labels: [], datasets: [{ label: 'Top 5 Rougher Recovery', data: [], backgroundColor: 'gray' }] },
-                options: { responsive: true, maintainAspectRatio: false }
-            });
-        };
-
-        function updateCharts(data) {
-            if (data['Flotation_Predicted']) {
-                let predictedValue = data['Flotation_Predicted'].Rougher_Recovery || 0;
-                recoveryChart.data.labels.push(new Date().toLocaleTimeString());
-                recoveryChart.data.datasets[0].data.push(predictedValue);
-            }
-            if (data['Flotation']) {
-                let realValue = data['Flotation'].Rougher_Recovery || 0;
-                recoveryChart.data.datasets[1].data.push(realValue);
-                
-                let feedValues = Object.values(data['Flotation']).map(v => parseFloat(v)).sort((a, b) => b - a).slice(0, 5);
-                feedChart.data.labels = ['1', '2', '3', '4', '5'];
-                feedChart.data.datasets[0].data = feedValues;
-            }
-            recoveryChart.update();
-            feedChart.update();
-        }
-    </script>
-</head>
-<body class="container mt-5">
-    <h1 class="text-center">Demo Flotación</h1>
-    <div class="row text-center mt-4">
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Rougher Recovery (Predicho)</h5>
-                <h2 id="flotation_predicted">N/A</h2>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Rougher Recovery (Real)</h5>
-                <h2 id="flotation">N/A</h2>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Feed Grade Cu</h5>
-                <h2 id="feed_grade">N/A</h2>
-            </div>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <h5>Gráfico de Tendencia - Rougher Recovery</h5>
-            <canvas id="recoveryChart"></canvas>
-        </div>
-        <div class="col-md-6">
-            <h5>Gráfico de Barras - Top 5 Rougher Recovery</h5>
-            <canvas id="feedChart"></canvas>
-        </div>
-    </div>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Flotación</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
-    <script>
-        var socket = io.connect('http://' + document.domain + ':' + location.port, {
-            transports: ['websocket', 'polling']
-        });
-        socket.on('update_values', function(data) {
-            console.log("📡 Datos recibidos en frontend:", data); // Verifica si llegan datos
-        
-            if (data['Flotation_Predicted']) {
-                console.log("🎯 Flotation_Predicted:", data['Flotation_Predicted']);
-                document.getElementById('flotation_predicted').innerText = data['Flotation_Predicted']['Rougher_Recovery'] || 'N/A';
-            }
-            if (data['Flotation']) {
-                console.log("🎯 Flotation:", data['Flotation']);
-                document.getElementById('flotation').innerText = data['Flotation']['Rougher Recovery'] || 'N/A';
-                document.getElementById('feed_grade').innerText = data['Flotation']['Feed Grade Cu'] || 'N/A';
-            }
-        });
-    </script>
-</head>
-<body class="container mt-5">
-    <h1 class="text-center">Demo Flotación</h1>
-    <div class="row text-center mt-4">
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Rougher Recovery (Predicho)</h5>
-                <h2 id="flotation_predicted">N/A</h2>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Rougher Recovery (Real)</h5>
-                <h2 id="flotation">N/A</h2>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card bg-light p-3">
-                <h5>Feed Grade Cu</h5>
-                <h2 id="feed_grade">N/A</h2>
-            </div>
-        </div>
-    </div>
-</body>
-</html> -->

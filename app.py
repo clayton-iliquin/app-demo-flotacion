@@ -22,7 +22,7 @@ def emit_data():
     while True:
         print("📡 Enviando datos al frontend:", latest_data)  # Verifica qué se está enviando
         socketio.emit('update_values', latest_data)
-        eventlet.sleep(30) # Espera 5 segundos
+        eventlet.sleep(60) # Espera X segundos
 
 # Iniciar el hilo para actualizar los datos en tiempo real
 eventlet.spawn(emit_data)  # Usar eventlet en lugar de threading
