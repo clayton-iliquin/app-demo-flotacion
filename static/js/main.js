@@ -77,6 +77,7 @@ var socket = io.connect('http://' + document.domain + ':' + location.port, {
     options: {
       indexAxis: 'y', // Horizontal
       responsive: true,
+      maintainAspectRatio: false,  // Permite que el gráfico se expanda
       scales: {
         x: {
           title: { display: true, text: 'Importancia (SHAP)' }
@@ -84,6 +85,9 @@ var socket = io.connect('http://' + document.domain + ':' + location.port, {
         y: {
           title: { display: true, text: 'Variable' }
         }
+      },
+      layout: {
+        padding: 10 // Espaciado interno para evitar que se superpongan los textos
       }
     }
   });
@@ -138,6 +142,10 @@ var socket = io.connect('http://' + document.domain + ':' + location.port, {
     shapChart.data.datasets[0].data = values;
     shapChart.data.datasets[0].backgroundColor = colors;
     shapChart.update();
+
+    // // 6. Ajustar la altura según el número de valores
+    // let chartContainer = document.getElementById('shapChart').parentNode;
+    // chartContainer.style.height = `${Math.max(150, top5.length * 30)}px`;
   }
   
   

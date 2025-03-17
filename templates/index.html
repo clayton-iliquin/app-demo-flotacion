@@ -48,17 +48,23 @@
 
   <!-- Sección de Gráficos: 70% (líneas) y 30% (barras) -->
   <div class="row mt-5">
-    <!-- Gráfico de tendencias (70%) -->
+    <!-- Gráfico de líneas (col-md-8) -->
     <div class="col-md-8">
       <h4 class="text-center">Tendencia de Recuperación (%)</h4>
       <canvas id="trendChart" height="120"></canvas>
     </div>
-    <!-- Gráfico de barras horizontal (30%) -->
+  
+    <!-- Gráfico de barras (col-md-4) -->
     <div class="col-md-4">
       <h4 class="text-center">Top Influencias</h4>
-      <canvas id="shapChart" height="120"></canvas>
+      <!-- Contenedor con altura fija de 300px (ejemplo) -->
+      <div style="position: relative; height: 350px; width: 100%;">
+        <canvas id="shapChart"></canvas>
+      </div>
     </div>
   </div>
+  
+  
 
   <!-- Archivo JS principal -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
